@@ -1,4 +1,4 @@
-# self-bot
+# userID grabber self-bot
 サーバー内の全ユーザーID(bot除く)を取得するselfbotです。<br>
 userID.txt内に書き込みます。<br>
 コマンドは!users <serverID>
