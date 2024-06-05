@@ -1,7 +1,5 @@
 const fs = require('fs');
-const { Client, Intents } = require('discord.js-selfbot-v13');
-
-const client = new Client({ intents: [Intents.FLAGS.Guilds, Intents.FLAGS.GuildMembers] });
+const { Client } = require('discord.js-selfbot-v13');
 
 client.once('ready', () => {
     console.log('Selfbot起動');
