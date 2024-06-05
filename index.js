@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { Client } = require('discord.js-selfbot-v13');
 const client = new Client();
+require('dotenv').config();
 
 client.once('ready', () => {
     console.log('Selfbot起動');
@@ -41,4 +42,4 @@ client.on('messageCreate', async message => {
     }
 });
 
-client.login('自分のアカウントのt0ken');
+client.login(process.env.token);
