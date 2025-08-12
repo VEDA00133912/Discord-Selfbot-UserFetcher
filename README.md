@@ -52,16 +52,16 @@ Ready! Logged in as 〇〇#0000
 と表示されます
 
 ## コマンド
-`$users <serverID>`
+`$users <serverID>`  
 ・指定サーバーのBOT以外のユーザーIDを取得し、userID.txt に保存します。  
 
 ![userId](./readme/userId.png)
 
-`$reactusers <channelID> <messageID> <emoji>`
+`$reactusers <channelID> <messageID> <emoji>`  
 ・指定メッセージに指定絵文字でリアクションした、BOT以外のユーザー名を usernames.txt に保存します。  
 ・指定は通常絵文字も、カスタム絵文字も可能です。
 
 ![react](./readme/react.png)   
   
-> commandsフォルダに追加すれば簡単に機能拡張が可能です
+> commandsフォルダに追加すれば簡単に機能拡張が可能です  
 > コマンドファイルの書き方は今あるやつを参考にしてください
