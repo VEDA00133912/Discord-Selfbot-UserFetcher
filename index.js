@@ -1,45 +1,36 @@
-const fs = require('fs');
 const { Client } = require('discord.js-selfbot-v13');
-const client = new Client();
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+
+const client = new Client();
+
+client.commands = new Map();
+const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(f => f.endsWith('.js'));
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
+}
 
 client.once('ready', () => {
-    console.log('Selfbot起動');
+    console.log(`Ready! Logged in as ${client.user.tag}`);
 });
 
-client.on('messageCreate', async message => {
-    if (message.author.bot) return; 
+client.on('messageCreate', async (message) => {
+    if (message.author.bot) return;
 
-    if (message.content.startsWith('!users')) {
-        const args = message.content.split(' ');
-        if (args.length !== 2) {
-            return message.reply('コマンドが無効です。\n !users <serverID>と送信してください');
-        }
+    const args = message.content.trim().split(/\s+/);
+    const commandName = args.shift();
 
-        const guildId = args[1];
-        const guild = client.guilds.cache.get(guildId);
-        if (!guild) {
-            return message.reply('サーバーに参加していません');
-        }
+    const command = client.commands.get(commandName);
+    if (!command) return;
 
-        try {
-            await guild.members.fetch(); 
-            const users = guild.members.cache.filter(member => !member.user.bot).map(member => member.user.id);
-            const content = users.join('\n');
-
-            fs.writeFile('userID.txt', content, err => {
-                if (err) {
-                    console.error('txtに記述するときにエラーが発生しました', err);
-                    return message.reply('txt記述エラー');
-                }
-                console.log('USERIDを保存しました');
-                message.reply('IDの保存が完了しました');
-            });
-        } catch (error) {
-            console.error('メンバーの取得エラー', error);
-            message.reply('メンバーの取得エラー');
-        }
+    try {
+        await command.execute(client, message, args);
+    } catch (error) {
+        console.error(`command error [${commandName}]:`, error.message);
+        message.reply('コマンド実行中にエラーが発生しました');
     }
 });
 
-client.login(process.env.token);
+client.login(process.env.TOKEN);
